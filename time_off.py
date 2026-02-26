@@ -9,11 +9,20 @@ version:1.0
 '''
 
 import tkinter as tk
+import threading
 import time
 import os
+import pygame
+
 
 # 全局变量
 shutdown_flag = False
+
+def music_play():
+    pygame.mixer.init()
+    pygame.mixer.music.load("山海皆可平.mp3") # 加载音效
+    pygame.mixer.music.play() # 播放音效
+    pygame.mixer.music.set_volume(0.5) # 设置音效音量
 
 # 刷新当前时间
 def refresh_current_time():
@@ -25,7 +34,7 @@ def refresh_current_time():
 def shutdown_setting():
     global shutdown_flag
     shutdown_flag = True
-    
+
 #刷新倒计时时间
 def refresh_down_time():
     #当前时间戳
@@ -70,14 +79,19 @@ def refresh_down_time():
         down_label.config(text=down_time)
         tk_obj.update()
         time.sleep(1)
+
         if diff_time == 0:
             # 倒计时结束
             down_label.config(text='已到下班时间')
+
+            threading.Thread(target = music_play, daemon = True).start() #后台播放音乐
+
             if shutdown_flag == True:
                 # 自动关机，定时一分钟关机，可以取消
                 down_label.config(text='下一分钟将自动关机')
                 os.system('shutdown -s -f -t 60')
             break
+
         diff_time -= 1
 
 # 主程序入口
@@ -120,11 +134,11 @@ if __name__ == "__main__":
     down_label.place(x=160, y=155)
     down_label.config(text='00时00分00秒')
 
-    # 开始计时按钮
-
     # 是否自动关机
     tk.Button(tk_obj, text='到点关机', bd='5', command=shutdown_setting, bg='red', font='宋体 10 bold').place(x=100, y=220)
 
+    # 开始计时按钮
     tk.Button(tk_obj, text='START', bd='5', command=refresh_down_time, bg='green', font='宋体 10 bold').place(x=200, y=220)
 
+    # 音乐播放
     tk_obj.mainloop()
