@@ -20,9 +20,9 @@ shutdown_flag = False
 
 def music_play():
     pygame.mixer.init()
-    pygame.mixer.music.load("山海皆可平.mp3") # 加载音效
-    pygame.mixer.music.play() # 播放音效
+    pygame.mixer.music.load("Ding.mp3") # 加载音效
     pygame.mixer.music.set_volume(0.5) # 设置音效音量
+    pygame.mixer.music.play(-1) # 播放音效
 
 # 刷新当前时间
 def refresh_current_time():
