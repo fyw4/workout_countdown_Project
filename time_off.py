@@ -46,7 +46,7 @@ def refresh_down_time():
         down_label.config(text = "小时的区间为(00-23)")
         return
     work_minute_val = int(work_minute.get())
-    if work_hour_val > 59:
+    if work_minute_val > 59:
         down_label.config(text="分钟的区间为(00-59)")
         return
     work_second_val = int(work_second.get())
